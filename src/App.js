@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
+import EducationSection from "./components/EducationSection";
 import "./styles.css";
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
     <div>
       <Navbar />
       <HeroSection />
+      <EducationSection />
     </div>
   );
 };
