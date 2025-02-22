@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap, Circle, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer,Circle, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Papa from "papaparse";
 

@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #fff;
+    background-color: #edffed;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
@@ -38,7 +38,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: 50px 20px; */
+    background: linear-gradient(to bottom, #ffffff, #e7fbe7);
+    padding: 50px 20px;
   }
   
   .hero-text {
@@ -63,13 +64,14 @@
   }
 
   /* Education Section Styles */
-.education-section {
-  padding: 50px 20px;
-  background: linear-gradient(to bottom, #ffffff, #c2f0c2);
-  text-align: center;
+  .education-section {
+    padding: 80px 20px;
+    background: linear-gradient(to bottom, #e7fbe7, #e7fbe7); /* Soft blend from hero-section */
+    text-align: center;
 }
 
 .articles-container {
+  margin-top:50px;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -136,5 +138,39 @@
   font-size: 14px;
   color: #333;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hospital-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hospital-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+
+.hospital-card a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.hospital-card a:hover {
+  text-decoration: underline;
+}
+
 
   
