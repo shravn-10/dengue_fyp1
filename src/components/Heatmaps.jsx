@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer,Circle, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Circle, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Papa from "papaparse";
 
@@ -37,55 +37,60 @@ const Heatmap = () => {
   const filteredData = data.filter((row) => row.year?.trim() === String(year));
 
   return (
-    <div>
-      <h2 style={{ textAlign: "center", marginBottom: "10px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#333" }}>
         Dengue Cases Heatmap - {year}
       </h2>
+
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
         {[2021, 2022, 2023, 2024].map((yr) => (
           <button
             key={yr}
             onClick={() => setYear(yr)}
             style={{
-              padding: "8px 15px",
-              borderRadius: "5px",
-              border: "none",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "1px solid #ff5733",
               cursor: "pointer",
-              backgroundColor: year === yr ? "#ff5733" : "#ddd",
-              color: year === yr ? "white" : "black",
+              backgroundColor: year === yr ? "#ff5733" : "white",
+              color: year === yr ? "white" : "#ff5733",
               fontWeight: "bold",
+              transition: "background 0.3s, color 0.3s",
             }}
           >
             {yr}
           </button>
         ))}
       </div>
-      <MapContainer center={[12.9716, 77.5946]} zoom={12} style={{ height: "500px", width: "100%" }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; OpenStreetMap contributors"
-        />
-        {filteredData.map((row, idx) => {
-          const latlng = locations[row.area?.trim()];
-          if (!latlng) return null;
 
-          const intensity = parseInt(row.cases) / 500; // Increased intensity
-          return (
-            <Circle
-              key={idx}
-              center={latlng}
-              radius={intensity * 100} // Adjust radius
-              color="red"
-              fillColor="red"
-              fillOpacity={0.5 + intensity / 10} // Adjust visibility
-            >
-              <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
-                <strong>{row.area}</strong>: {row.cases} cases
-              </Tooltip>
-            </Circle>
-          );
-        })}
-      </MapContainer>
+      <div style={{ width: "90%", maxWidth: "800px", height: "400px", borderRadius: "10px", overflow: "hidden", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}>
+        <MapContainer center={[12.9216, 77.6246]} zoom={11} style={{ height: "100%", width: "100%" }}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="&copy; OpenStreetMap contributors"
+          />
+          {filteredData.map((row, idx) => {
+            const latlng = locations[row.area?.trim()];
+            if (!latlng) return null;
+
+            const intensity = parseInt(row.cases) / 100;
+            return (
+              <Circle
+                key={idx}
+                center={latlng}
+                radius={intensity * 120}
+                color="red"
+                fillColor="red"
+                fillOpacity={0.5 + intensity / 100}
+              >
+                <Tooltip direction="top" offset={[0, -10]} opacity={1} interactive="true">
+                  <strong>{row.area}</strong>: {row.cases} cases
+                </Tooltip>
+              </Circle>
+            );
+          })}
+        </MapContainer>
+      </div>
     </div>
   );
 };
