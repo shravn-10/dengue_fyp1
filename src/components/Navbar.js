@@ -1,19 +1,47 @@
 import React from "react";
-import "../styles.css";
 
-const Navbar = () => {
+const Navbar = ({ onNavChange, currentPage, scrollToEducation, scrollToMap, scrollToHospitals }) => {
+  const handleNavClick = (page, scrollFunction = null) => {
+    if (currentPage !== "home" && scrollFunction) {
+      onNavChange("home");
+      // We need to wait a bit for the home page to render before scrolling
+      setTimeout(() => {
+        scrollFunction();
+      }, 100);
+    } else if (scrollFunction) {
+      scrollFunction();
+    } else {
+      onNavChange(page);
+    }
+  };
+
   return (
-    <nav className="navbar">
-      <div className="logo">Dengue360</div>
+    <div className="navbar">
+      <div className="logo" onClick={() => onNavChange("home")}>DengueWatch</div>
       <ul className="nav-links">
-        <li>Home</li>
-        <li>Subscription</li>
-        <li>Hospitals</li>
-        <li>Heatmaps</li>
-        <li>Education</li>
+        <li onClick={() => onNavChange("home")} className={currentPage === "home" ? "active" : ""}>
+          Home
+        </li>
+        <li onClick={() => onNavChange("prediction")} className={currentPage === "prediction" ? "active" : ""}>
+          Predict
+        </li>
+        <li onClick={() => handleNavClick("home", scrollToEducation)}>
+          Education
+        </li>
+        <li onClick={() => handleNavClick("home", scrollToMap)}>
+          Map
+        </li>
+        <li onClick={() => handleNavClick("home", scrollToHospitals)}>
+          Hospitals
+        </li>
       </ul>
-      <button className="login-btn">Login / SignUp</button>
-    </nav>
+      <button 
+        className="subscribe-btn" 
+        onClick={() => onNavChange("subscription")}
+      >
+        Subscribe
+      </button>
+    </div>
   );
 };
 

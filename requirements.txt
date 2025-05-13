@@ -1,0 +1,9 @@
+Flask==3.1.1
+flask_cors==5.0.1
+numpy==2.2.5
+pandas==2.2.3
+python-dotenv==1.1.0
+Requests==2.32.3
+schedule==1.2.2
+statsmodels==0.14.4
+Werkzeug==3.1.3

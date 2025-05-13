@@ -1,7 +1,7 @@
 import React from "react";
-import dengueImage from "../children_dengue.png"; 
-import urbImage from "../urbanization.png"; 
-import waterImage from "../water_stg.png"; 
+import dengueImage from "../static/children_dengue.png"; 
+import urbImage from "../static/urbanization.png"; 
+import waterImage from "../static/water_stg.png"; 
 import "../styles.css";
 
 const articles = [
