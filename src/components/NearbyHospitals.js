@@ -81,42 +81,70 @@ const NearbyHospitals = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-4">🏥 Nearby Hospitals Finder</h2>
-      <button className="btn btn-primary mb-3" onClick={getLocation}>
-        Find Hospitals
-      </button>
+    <div className="hospitals-section">
+      <div className="hospitals-container">
+        <h2 className="hospitals-title">🏥 Nearby Hospitals Finder</h2>
+        <p className="hospitals-subtitle">
+          Find hospitals close to your current location for quick access to medical care
+        </p>
+        
+        <button className="find-hospitals-btn" onClick={getLocation}>
+          Find Hospitals Near Me
+        </button>
 
-      {location && (
-        <MapContainer center={[location.lat, location.lon]} zoom={14} style={{ height: "500px", width: "80%", borderRadius: "10px" }}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
-          <Marker position={[location.lat, location.lon]} icon={userIcon}>
-            <Popup>You are here</Popup>
-          </Marker>
-          {hospitals.map((hospital) => (
-            <Marker key={hospital.id} position={[hospital.lat, hospital.lon]} icon={hospitalIcon}>
-              <Popup>
-                <b>{hospital.name}</b> <br />
-                🚗 Distance: {hospital.distance.toFixed(2)} km <br />
-                <a href={`https://www.google.com/maps/search/?api=1&query=${hospital.lat},${hospital.lon}`} target="_blank" rel="noopener noreferrer">
-                  🔗 Open in Google Maps
-                </a>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      )}
+        {location && (
+          <div className="hospitals-map-container">
+            <MapContainer 
+              center={[location.lat, location.lon]} 
+              zoom={14} 
+              style={{ height: "100%", width: "100%" }}
+            >
+              <TileLayer 
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                attribution="&copy; OpenStreetMap contributors" 
+              />
+              <Marker position={[location.lat, location.lon]} icon={userIcon}>
+                <Popup>You are here</Popup>
+              </Marker>
+              {hospitals.map((hospital) => (
+                <Marker 
+                  key={hospital.id} 
+                  position={[hospital.lat, hospital.lon]} 
+                  icon={hospitalIcon}
+                >
+                  <Popup>
+                    <b>{hospital.name}</b> <br />
+                    🚗 Distance: {hospital.distance.toFixed(2)} km <br />
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${hospital.lat},${hospital.lon}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      🔗 Open in Google Maps
+                    </a>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+        )}
 
-      <h3 className="mt-4">All Nearby Hospitals</h3>
-      {loading ? (
-        <p>Loading hospitals...</p>
-      ) : (
-        <div className="hospital-list">
-          {hospitals.slice(0, 5).map((hospital) => (
-            <HospitalCard key={hospital.id} hospital={hospital} />
-          ))}
-        </div>
-      )}
+        <h3 className="hospitals-list-title">All Nearby Hospitals</h3>
+        
+        {loading ? (
+          <p className="loading-text">Loading hospitals...</p>
+        ) : hospitals.length > 0 ? (
+          <div className="hospital-list">
+            {hospitals.slice(0, 5).map((hospital) => (
+              <HospitalCard key={hospital.id} hospital={hospital} />
+            ))}
+          </div>
+        ) : location ? (
+          <p className="no-hospitals">No hospitals found nearby. Please try a different location.</p>
+        ) : (
+          <p className="no-hospitals">Click the button above to find hospitals near you.</p>
+        )}
+      </div>
     </div>
   );
 };

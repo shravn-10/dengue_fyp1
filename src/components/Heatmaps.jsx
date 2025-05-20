@@ -35,61 +35,75 @@ const Heatmap = () => {
   }, []);
 
   const filteredData = data.filter((row) => row.year?.trim() === String(year));
+  
+  // Calculate intensity levels for legend
+  const getIntensityLevel = (cases) => {
+    const casesNum = parseInt(cases);
+    if (casesNum < 50) return "low-cases";
+    if (casesNum < 150) return "medium-cases";
+    return "high-cases";
+  };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#333" }}>
-        Dengue Cases Heatmap - {year}
-      </h2>
+    <div className="heatmap-section">
+      <div className="heatmap-container">
+        <h2 className="heatmap-title">Dengue Cases Heatmap - {year}</h2>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
-        {[2021, 2022, 2023, 2024].map((yr) => (
-          <button
-            key={yr}
-            onClick={() => setYear(yr)}
-            style={{
-              padding: "10px 20px",
-              borderRadius: "8px",
-              border: "1px solid #ff5733",
-              cursor: "pointer",
-              backgroundColor: year === yr ? "#ff5733" : "white",
-              color: year === yr ? "white" : "#ff5733",
-              fontWeight: "bold",
-              transition: "background 0.3s, color 0.3s",
-            }}
-          >
-            {yr}
-          </button>
-        ))}
-      </div>
+        <div className="year-selector">
+          {[2021, 2022, 2023, 2024].map((yr) => (
+            <button
+              key={yr}
+              onClick={() => setYear(yr)}
+              className={`year-button ${year === yr ? 'active' : ''}`}
+            >
+              {yr}
+            </button>
+          ))}
+        </div>
 
-      <div style={{ width: "90%", maxWidth: "800px", height: "400px", borderRadius: "10px", overflow: "hidden", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}>
-        <MapContainer center={[12.9216, 77.6246]} zoom={11} style={{ height: "100%", width: "100%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          {filteredData.map((row, idx) => {
-            const latlng = locations[row.area?.trim()];
-            if (!latlng) return null;
+        <div className="map-wrapper">
+          <MapContainer center={[12.9216, 77.6246]} zoom={11} style={{ height: "100%", width: "100%" }}>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            {filteredData.map((row, idx) => {
+              const latlng = locations[row.area?.trim()];
+              if (!latlng) return null;
 
-            const intensity = parseInt(row.cases) / 100;
-            return (
-              <Circle
-                key={idx}
-                center={latlng}
-                radius={intensity * 120}
-                color="red"
-                fillColor="red"
-                fillOpacity={0.5 + intensity / 100}
-              >
-                <Tooltip direction="top" offset={[0, -10]} opacity={1} interactive="true">
-                  <strong>{row.area}</strong>: {row.cases} cases
-                </Tooltip>
-              </Circle>
-            );
-          })}
-        </MapContainer>
+              const intensity = parseInt(row.cases) / 100;
+              return (
+                <Circle
+                  key={idx}
+                  center={latlng}
+                  radius={intensity * 120}
+                  color="red"
+                  fillColor="red"
+                  fillOpacity={0.5 + intensity / 100}
+                >
+                  <Tooltip direction="top" offset={[0, -10]} opacity={1} interactive="true">
+                    <strong>{row.area}</strong>: {row.cases} cases
+                  </Tooltip>
+                </Circle>
+              );
+            })}
+          </MapContainer>
+        </div>
+        
+        <div className="heatmap-legend">
+          <div className="legend-item">
+            <div className="legend-color low-cases"></div>
+            <span>Low Cases (&lt;150)</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color medium-cases"></div>
+            <span>Medium Cases (150-300)</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color high-cases"></div>
+            <span>High Cases (&gt;300)</span>
+          </div>
+        </div>
       </div>
     </div>
   );

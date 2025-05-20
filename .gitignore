@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# database
+backend/dengue_subscribers.db
+
 # testing
 /coverage
 

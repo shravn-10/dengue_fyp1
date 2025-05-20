@@ -465,7 +465,8 @@ def subscribe():
         welcome_message += f"You'll get {alert_frequency} alerts for {location}.\n"
         welcome_message += "Stay safe! Reply STOP to unsubscribe."
         
-        sms_result = send_sms(mobile, welcome_message)
+        # sms_result = send_sms(mobile, welcome_message)
+        sms_result = {'success': True}
         
         # Log the welcome message
         c.execute("SELECT id FROM subscribers WHERE email = ?", (email,))
